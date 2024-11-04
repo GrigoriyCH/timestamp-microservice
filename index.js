@@ -24,6 +24,23 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+// Маршрут для обробки дати
+app.get("/api/:date?", (req, res) => {
+  let dateParam = req.params.date;
+
+  // Якщо параметр не вказано, використовуємо поточну дату
+  let date = dateParam ? new Date(isNaN(dateParam) ? dateParam : parseInt(dateParam)) : new Date();
+
+  // Перевіряємо, чи дата валідна
+  if (date.toString() === "Invalid Date") {
+    res.json({ error: "Invalid Date" });
+  } else {
+    res.json({
+      unix: date.getTime(),
+      utc: date.toUTCString()
+    });
+  }
+});
 
 
 // Listen on port set in environment variable or default to 3000
